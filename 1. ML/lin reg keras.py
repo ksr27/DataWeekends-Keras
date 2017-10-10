@@ -32,3 +32,21 @@ plt.scatter(x=X, y=y_true, data=df)
 plt.plot(X, y_pred, color='red')
 
 weights, biases=model.get_weights()
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y_true, test_size=0.2, random_state=0)
+
+weights[0,0]=0.0
+biases[0]=0.0
+model.set_weights((weights, biases))
+
+model.fit(X_train, y_train, epochs=50, verbose=0)
+
+y_train_pred=model.predict(X_train)
+y_test_pred=model.predict(y_test)
+
+from sklearn.metrics import mean_squared_error as mse
+
+mse_train=mse(y_train, y_train_pred)
+mse_test=mse(y_test, y_test_pred)
