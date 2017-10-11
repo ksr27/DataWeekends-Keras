@@ -41,3 +41,37 @@ results=deep_model.evaluate(X_test, y_test)
 
 y_train_pred=deep_model.predict_classes(X_train)
 y_test_pred=deep_model.predict_classes(X_test)
+
+# Multiclass classification
+df=pd.read_csv('../data/iris.csv')
+
+import seaborn as sns
+sns.pairplot(df, hue='species')
+
+X=df.drop('species', axis=1)
+target_names=df['species'].unique()
+target_dict={n:i for i,n in enumerate(target_names)}
+y=df['species'].map(target_dict)
+
+from keras.utils.np_utils import to_categorical
+
+y_cat=to_categorical(y)
+X_train, X_test, y_train, y_test = train_test_split(X.values, y_cat, test_size=0.25, random_state=0)
+
+# Shallow model
+model=Sequential()
+model.add(Dense(units=3, input_shape=(4, ), activation='softmax'))
+model.compile(Adam(lr=0.1), loss='categorical_crossentropy', metrics=['accuracy'])
+model.fit(X_train, y_train, epochs=20, verbose=0)
+y_pred=model.predict(X_test)
+
+
+
+
+
+
+
+
+
+
+
